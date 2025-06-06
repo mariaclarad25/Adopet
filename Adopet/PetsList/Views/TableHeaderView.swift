@@ -9,7 +9,7 @@ import UIKit
 
 class TableHeaderView: UIView {
     
-    private lazy var text: UILabel = {
+    private lazy var textHeaderLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Olá! Veja os amigos disponíveis para adoção!"
@@ -20,7 +20,7 @@ class TableHeaderView: UIView {
         return label
     }()
     
-    private lazy var img1: UIImageView = {
+    private lazy var decorationImage: UIImageView = {
         let imgView = UIImageView(image: UIImage(named: "shape-1"))
         imgView.translatesAutoresizingMaskIntoConstraints = false
         return imgView
@@ -28,18 +28,25 @@ class TableHeaderView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        addSubview(img1)
-        addSubview(text)
-        
+        addSubviews()
+        setupConstraints()
+    
+    }
+    
+    private func addSubviews() {
+        addSubview(decorationImage)
+        addSubview(textHeaderLabel)
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
-            img1.topAnchor.constraint(equalTo: topAnchor),
-            img1.leadingAnchor.constraint(equalTo: leadingAnchor),
-            img1.bottomAnchor.constraint(equalTo: bottomAnchor),
+            decorationImage.topAnchor.constraint(equalTo: topAnchor),
+            decorationImage.leadingAnchor.constraint(equalTo: leadingAnchor),
+            decorationImage.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            text.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 64),
-            text.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -64),
-            text.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
+            textHeaderLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 64),
+            textHeaderLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -64),
+            textHeaderLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
         ])
     }
     

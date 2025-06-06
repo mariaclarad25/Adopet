@@ -9,32 +9,32 @@ import UIKit
 
 class SignInViewController: UIViewController {
     
-    private lazy var paws: UIImageView = {
+    private lazy var decorationPawsImage: UIImageView = {
         let imgView = UIImageView(image: UIImage(named: "paws"))
         imgView.translatesAutoresizingMaskIntoConstraints = false
         return imgView
     }()
 
-    private lazy var shape: UIImageView = {
+    private lazy var decorativeShapeTopImage: UIImageView = {
         let imgView = UIImageView(image: UIImage(named: "shape-1"))
         imgView.translatesAutoresizingMaskIntoConstraints = false
         return imgView
     }()
     
-    private lazy var shape2: UIImageView = {
+    private lazy var decorativeShapeSideImage: UIImageView = {
         let image = UIImage(named: "shape-2")?.withHorizontallyFlippedOrientation()
         let imgView = UIImageView(image: image)
         imgView.translatesAutoresizingMaskIntoConstraints = false
         return imgView
     }()
     
-    private lazy var logo: UIImageView = {
+    private lazy var logoAdopetBlue: UIImageView = {
         let imgView = UIImageView(image: UIImage(named: "logo-blue"))
         imgView.translatesAutoresizingMaskIntoConstraints = false
         return imgView
     }()
     
-    private lazy var text: UILabel = {
+    private lazy var loginTextLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Já tem conta? Faça seu login:"
@@ -45,7 +45,7 @@ class SignInViewController: UIViewController {
         return label
     }()
     
-    private lazy var email: UILabel = {
+    private lazy var emailLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Email"
@@ -56,7 +56,7 @@ class SignInViewController: UIViewController {
         return label
     }()
     
-    private lazy var emailTxtField: UITextField = {
+    private lazy var insertEmailTextField: UITextField = {
         let txtField = UITextField()
         txtField.translatesAutoresizingMaskIntoConstraints = false
         txtField.placeholder = "Insira seu email"
@@ -71,7 +71,7 @@ class SignInViewController: UIViewController {
         return txtField
     }()
     
-    private lazy var password: UILabel = {
+    private lazy var passwordLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Senha"
@@ -82,7 +82,7 @@ class SignInViewController: UIViewController {
         return label
     }()
     
-    private lazy var passwordTxtField: UITextField = {
+    private lazy var insertPasswordTextField: UITextField = {
         let txtField = UITextField()
         txtField.translatesAutoresizingMaskIntoConstraints = false
         txtField.placeholder = "Crie uma senha"
@@ -98,8 +98,8 @@ class SignInViewController: UIViewController {
         return txtField
     }()
     
-    private lazy var stack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [email, emailTxtField, password, passwordTxtField])
+    private lazy var loginStackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [emailLabel, insertEmailTextField, passwordLabel, insertPasswordTextField])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.alignment = .fill
         stack.distribution = .equalSpacing
@@ -108,7 +108,7 @@ class SignInViewController: UIViewController {
         return stack
     }()
     
-    private lazy var button: UIButton = {
+    private lazy var enterButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Entrar", for: .normal)
@@ -119,50 +119,63 @@ class SignInViewController: UIViewController {
         return button
     }()
 
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.hidesBackButton = true
-        view.backgroundColor = .white
-        view.addSubview(shape)
-        view.addSubview(shape2)
-        view.addSubview(paws)
-        view.addSubview(logo)
-        view.addSubview(text)
-        view.addSubview(stack)
-        view.addSubview(button)
-        // Do any additional setup after loading the view.
-        
-        NSLayoutConstraint.activate([
-            shape2.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -48),
-            
-            logo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logo.topAnchor.constraint(equalTo: shape.bottomAnchor, constant: -108),
-            
-            text.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            text.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            text.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 32),
-            
-            paws.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
-            stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            stack.topAnchor.constraint(equalTo: text.bottomAnchor, constant: 32),
-            
-            emailTxtField.heightAnchor.constraint(equalToConstant: 48),
-            passwordTxtField.heightAnchor.constraint(equalToConstant: 48),
-            
-            button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 88),
-            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -88),
-            button.topAnchor.constraint(equalTo: stack.bottomAnchor, constant: 32),
-            button.heightAnchor.constraint(equalToConstant: 48),
-
-
-        ])
+        setupView()
+        addSubviews()
+        setupConstraints()
     }
-    
+        private func setupView(){
+            navigationItem.hidesBackButton = true
+            view.backgroundColor = .white
+        }
+        
+        private func addSubviews(){
+            view.addSubview(decorativeShapeTopImage)
+            view.addSubview(decorativeShapeSideImage)
+            view.addSubview(decorationPawsImage)
+            view.addSubview(logoAdopetBlue)
+            view.addSubview(loginTextLabel)
+            view.addSubview(loginStackView)
+            view.addSubview(enterButton)
+        }
+        
+        private func setupConstraints(){
+            NSLayoutConstraint.activate([
+                decorativeShapeSideImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -48),
+                
+                logoAdopetBlue.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                logoAdopetBlue.topAnchor.constraint(equalTo: decorativeShapeTopImage.bottomAnchor, constant: -108),
+                
+                loginTextLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+                loginTextLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+                loginTextLabel.topAnchor.constraint(equalTo: logoAdopetBlue.bottomAnchor, constant: 32),
+                
+                decorationPawsImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                
+                loginStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+                loginStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+                loginStackView.topAnchor.constraint(equalTo: loginTextLabel.bottomAnchor, constant: 32),
+                
+                insertEmailTextField.heightAnchor.constraint(equalToConstant: 48),
+                insertPasswordTextField.heightAnchor.constraint(equalToConstant: 48),
+                
+                enterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 88),
+                enterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -88),
+                enterButton.topAnchor.constraint(equalTo: loginStackView.bottomAnchor, constant: 32),
+                enterButton.heightAnchor.constraint(equalToConstant: 48),
+                
+                
+            ])
+    }
     @objc func signIn() {
-        let email = emailTxtField.text!
-        let password = passwordTxtField.text!
+        /*let email = insertEmailTextField.text!
+        let password = insertPasswordTextField.text!*/
+        
+        guard let email = insertEmailTextField.text,
+              let password = insertPasswordTextField.text,
+              !email.isEmpty, !password.isEmpty else {return }
         
         navigationController?.pushViewController(PetsListViewController(), animated: true)
     }

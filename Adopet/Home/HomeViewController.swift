@@ -18,8 +18,7 @@ class HomeViewController: UIViewController {
         signIn.layer.cornerRadius = 8
         signUp.layer.cornerRadius = 8
     }
-
-
+    
     @IBAction func signIn(_ sender: Any) {
         navigationController?.pushViewController(SignInViewController(), animated: true)
     }

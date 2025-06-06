@@ -18,24 +18,24 @@ class SignUpViewController: UIViewController {
     }()
     
     private lazy var contentView: UIView = {
-        let v = UIView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
-    private lazy var img1: UIImageView = {
+    private lazy var decorativeShapeTopImage: UIImageView = {
         let imgView = UIImageView(image: UIImage(named: "shape-1"))
         imgView.translatesAutoresizingMaskIntoConstraints = false
         return imgView
     }()
     
-    private lazy var img2: UIImageView = {
+    private lazy var decorationPawsImage: UIImageView = {
         let imgView = UIImageView(image: UIImage(named: "paws"))
         imgView.translatesAutoresizingMaskIntoConstraints = false
         return imgView
     }()
     
-    private lazy var label: UILabel = {
+    private lazy var questionRegisterLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Ainda não tem cadastro? Então, antes de buscar seu melhor amigo, precisamos de alguns dados:"
@@ -46,7 +46,7 @@ class SignUpViewController: UIViewController {
         return label
     }()
     
-    private lazy var name: UILabel = {
+    private lazy var registerNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Nome"
@@ -56,7 +56,7 @@ class SignUpViewController: UIViewController {
         return label
     }()
     
-    private lazy var nameTxtField: UITextField = {
+    private lazy var insertNameTextField: UITextField = {
         let txtField = UITextField()
         txtField.translatesAutoresizingMaskIntoConstraints = false
         txtField.placeholder = "Digite seu nome completo"
@@ -71,7 +71,7 @@ class SignUpViewController: UIViewController {
         return txtField
     }()
     
-    private lazy var email: UILabel = {
+    private lazy var registerEmailLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Email"
@@ -81,7 +81,7 @@ class SignUpViewController: UIViewController {
         return label
     }()
     
-    private lazy var emailTxtField: UITextField = {
+    private lazy var insertEmailTextField: UITextField = {
         let txtField = UITextField()
         txtField.translatesAutoresizingMaskIntoConstraints = false
         txtField.placeholder = "Escolha seu melhor email"
@@ -97,7 +97,7 @@ class SignUpViewController: UIViewController {
         return txtField
     }()
     
-    private lazy var telefone: UILabel = {
+    private lazy var registerTelefoneLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Telefone com DDD"
@@ -107,7 +107,7 @@ class SignUpViewController: UIViewController {
         return label
     }()
     
-    private lazy var telefoneTxtField: UITextField = {
+    private lazy var insertTelefoneTextField: UITextField = {
         let txtField = UITextField()
         txtField.translatesAutoresizingMaskIntoConstraints = false
         txtField.placeholder = "Insira seu telefone/whatsapp"
@@ -122,7 +122,7 @@ class SignUpViewController: UIViewController {
         return txtField
     }()
     
-    private lazy var password: UILabel = {
+    private lazy var registerPasswordLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Senha"
@@ -132,7 +132,7 @@ class SignUpViewController: UIViewController {
         return label
     }()
     
-    private lazy var passwordtxtField: UITextField = {
+    private lazy var insertPasswordTextField: UITextField = {
         let txtField = UITextField()
         txtField.translatesAutoresizingMaskIntoConstraints = false
         txtField.placeholder = "Crie uma senha"
@@ -148,8 +148,8 @@ class SignUpViewController: UIViewController {
         return txtField
     }()
     
-    private lazy var stack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [name, nameTxtField, email, emailTxtField, telefone, telefoneTxtField, password, passwordtxtField])
+    private lazy var registerUserStackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [registerNameLabel, insertNameTextField, registerEmailLabel, insertEmailTextField, registerTelefoneLabel, insertTelefoneTextField, registerPasswordLabel, insertPasswordTextField])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.alignment = .fill
         stack.distribution = .equalSpacing
@@ -158,7 +158,7 @@ class SignUpViewController: UIViewController {
         return stack
     }()
     
-    private lazy var button: UIButton = {
+    private lazy var confirmRegisterButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Cadastrar", for: .normal)
@@ -169,17 +169,29 @@ class SignUpViewController: UIViewController {
         return button
     }()
         
-    override func viewDidLoad() {
+    override func viewDidLoad(){
         super.viewDidLoad()
+        setupView()
+        addSubviews()
+        configurationScrollView()
+        setupConstraints()
+    }
+    
+    private func setupView(){
         view.backgroundColor = .white
         navigationItem.hidesBackButton = true
-        
+    }
+    
+    private func addSubviews(){
         view.addSubview(scrollView)
-        
+    }
+    
+    private func configurationScrollView(){
         scrollView.contentInsetAdjustmentBehavior = .never
-        
         scrollView.addSubview(contentView)
-        
+    }
+    
+    private func setupConstraints(){
         NSLayoutConstraint.activate([
             
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -195,46 +207,53 @@ class SignUpViewController: UIViewController {
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
         ])
-        contentView.addSubview(img1)
-        contentView.addSubview(label)
-        contentView.addSubview(stack)
-        contentView.addSubview(button)
-        contentView.addSubview(img2)
+        contentView.addSubview(decorativeShapeTopImage)
+        contentView.addSubview(questionRegisterLabel)
+        contentView.addSubview(registerUserStackView)
+        contentView.addSubview(confirmRegisterButton)
+        contentView.addSubview(decorationPawsImage)
         
         NSLayoutConstraint.activate([
             
-            img2.topAnchor.constraint(equalTo: contentView.topAnchor),
-            img2.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            decorationPawsImage.topAnchor.constraint(equalTo: contentView.topAnchor),
+            decorationPawsImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            img1.topAnchor.constraint(equalTo: contentView.topAnchor),
-            img1.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            img1.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            decorativeShapeTopImage.topAnchor.constraint(equalTo: contentView.topAnchor),
+            decorativeShapeTopImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            decorativeShapeTopImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            label.topAnchor.constraint(equalTo: img1.bottomAnchor, constant: -120),
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 64),
-            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -64),
+            questionRegisterLabel.topAnchor.constraint(equalTo: decorativeShapeTopImage.bottomAnchor, constant: -120),
+            questionRegisterLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 64),
+            questionRegisterLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -64),
             
-            stack.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 32),
-            stack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 32),
-            stack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -32),
+            registerUserStackView.topAnchor.constraint(equalTo: questionRegisterLabel.bottomAnchor, constant: 32),
+            registerUserStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 32),
+            registerUserStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -32),
             
-            nameTxtField.heightAnchor.constraint(equalToConstant: 48),
-            telefoneTxtField.heightAnchor.constraint(equalToConstant: 48),
-            emailTxtField.heightAnchor.constraint(equalToConstant: 48),
-            passwordtxtField.heightAnchor.constraint(equalToConstant: 48),
+            insertNameTextField.heightAnchor.constraint(equalToConstant: 48),
+            insertTelefoneTextField.heightAnchor.constraint(equalToConstant: 48),
+            insertEmailTextField.heightAnchor.constraint(equalToConstant: 48),
+            insertPasswordTextField.heightAnchor.constraint(equalToConstant: 48),
             
-            button.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 88),
-            button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -88),
-            button.topAnchor.constraint(equalTo: stack.bottomAnchor, constant: 32),
-            button.heightAnchor.constraint(equalToConstant: 48),
+            confirmRegisterButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 88),
+            confirmRegisterButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -88),
+            confirmRegisterButton.topAnchor.constraint(equalTo: registerUserStackView.bottomAnchor, constant: 32),
+            confirmRegisterButton.heightAnchor.constraint(equalToConstant: 48),
             
-            button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -32)
+            confirmRegisterButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -32)
         ])
     }
     
     @objc func signUpButton() {
         
-        db.saveUser(name: nameTxtField.text!, email: emailTxtField.text!, phoneNumber: telefoneTxtField.text!, password: password.text!)
+        guard let name = insertNameTextField.text,
+              let email = insertEmailTextField.text,
+              let phoneNumber = insertTelefoneTextField.text,
+              let password = insertPasswordTextField.text else {return}
+        
+        let userData = CreateUserAccountModel(name: name, email: email, phoneNumber: phoneNumber, password: password)
+        
+        db.saveUser(userData: userData)
         
         navigationController?.pushViewController(SignInViewController(), animated: true)
     }

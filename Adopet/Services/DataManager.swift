@@ -38,11 +38,9 @@ class DataManager {
         }.resume()
     }
     
-    func saveUser(name: String,
-                    email: String,
-                    phoneNumber: String,
-                    password: String) {
+    func saveUser(userData: CreateUserAccountModel) {
         // Salvar usuário no banco de dados
+        print (userData.name)
     }
     
     func signIn(email: String, password: String, completion: @escaping (Result<Bool, DataManagerError>) -> Void) {

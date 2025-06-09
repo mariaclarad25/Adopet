@@ -7,32 +7,32 @@
 
 import Foundation
 
-enum NetwokingError: Error {
-    case networkError(Error)
-    case dataUnavailable
-    case decodingError(Error)
-    case urlUnavailable
+protocol PetsDataServiceDelegate: AnyObject {
+    func didFetchPetsSuccessfully (_ pets: [Pet])
+    func didFailWithError (_ error: NetwokingError)
 }
 
 class PetsDataService { 
-    func fetchPets(url: URL, completion: @escaping (Result<[Pet], NetwokingError>) -> Void) {
-        URLSession.shared.dataTask(with: url) { (responseData, _, error) in
-            if let error {
-                completion(.failure(.networkError(error)))
-                return
+    
+    weak var delegate: PetsDataServiceDelegate?
+    
+    private var networkingService: NetwokingProtocol = URLSessionNetwoking()
+    
+    func fetchPets() {
+        
+        guard let url = URL(string: "https://my-json-server.typicode.com/giovannamoeller/pets-api/pets") else {return}
+        
+       // networkingService.request(url, completion: completion)
+        
+        networkingService.request(url) { [weak self] (result: Result<[Pet], NetwokingError>) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let pets):
+                    self?.delegate?.didFetchPetsSuccessfully(pets)
+                case .failure(let failure):
+                    self?.delegate?.didFailWithError(failure)
+                }
             }
-            
-            guard let data = responseData else {
-                completion(.failure(.dataUnavailable))
-                return
-            }
-            
-            do {
-                let result = try JSONDecoder().decode([Pet].self, from: data)
-                completion(.success(result))
-            } catch {
-                completion(.failure(.decodingError(error)))
-            }
-        }.resume()
+        }
     }
 }

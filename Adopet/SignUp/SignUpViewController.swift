@@ -9,7 +9,7 @@ import UIKit
 
 class SignUpViewController: UIViewController {
     
-    private let db = DataManager()
+    private var userManager = UserManager()
     
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -38,7 +38,7 @@ class SignUpViewController: UIViewController {
     private lazy var questionRegisterLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Ainda não tem cadastro? Então, antes de buscar seu melhor amigo, precisamos de alguns dados:"
+        label.text = Constants.doesntHaveAccount
         label.font = .init(name: "Poppins", size: 16)
         label.numberOfLines = 0
         label.textColor = UIColor(named: "ColorBlue")
@@ -46,114 +46,33 @@ class SignUpViewController: UIViewController {
         return label
     }()
     
-    private lazy var registerNameLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Nome"
-        label.font = .init(name: "Poppins", size: 16)
-        label.numberOfLines = 0
-        label.textColor = UIColor(named: "ColorGray")
-        return label
+    private lazy var nameInputField: APLabeledTextField = {
+        return APLabeledTextField(title: Constants.nameLabelTitle, placeholder:  Constants.nameTextFieldPlaceholder)
     }()
     
-    private lazy var insertNameTextField: UITextField = {
-        let txtField = UITextField()
-        txtField.translatesAutoresizingMaskIntoConstraints = false
-        txtField.placeholder = "Digite seu nome completo"
-        txtField.font = .init(name: "Poppins", size: 16)
-        txtField.backgroundColor = UIColor(named: "ColorLightGray")
-        txtField.layer.cornerRadius = 8
-        txtField.layer.shadowOffset = .init(width: 0, height: 2)
-        txtField.layer.shadowOpacity = 0.25
-        txtField.layer.shadowColor = UIColor(named: "ColorGray")?.cgColor
-        txtField.layer.shadowRadius = 0
-        txtField.setLeftPaddingPoints(15)
-        return txtField
+    private lazy var emailInputField: APLabeledTextField = {
+       let inputField = APLabeledTextField(title: "Email", placeholder: "Escolha seu melhor email")
+        inputField.textField.addTarget(self, action: #selector(txtFieldChanging(_:)), for: .editingChanged)
+        inputField.textField.keyboardType = .emailAddress
+        return inputField
     }()
     
-    private lazy var registerEmailLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Email"
-        label.font = .init(name: "Poppins", size: 16)
-        label.numberOfLines = 0
-        label.textColor = UIColor(named: "ColorGray")
-        return label
+    private lazy var phoneNumberInputField: APLabeledTextField = {
+        let inputField = APLabeledTextField(title: "Telefone com DDD", placeholder: "Insira seu telefone/whatsapp")
+        inputField.textField.keyboardType = .phonePad
+        return inputField
     }()
     
-    private lazy var insertEmailTextField: UITextField = {
-        let txtField = UITextField()
-        txtField.translatesAutoresizingMaskIntoConstraints = false
-        txtField.placeholder = "Escolha seu melhor email"
-        txtField.font = .init(name: "Poppins", size: 16)
-        txtField.backgroundColor = UIColor(named: "ColorLightGray")
-        txtField.layer.cornerRadius = 8
-        txtField.layer.shadowOffset = .init(width: 0, height: 2)
-        txtField.layer.shadowOpacity = 0.25
-        txtField.layer.shadowColor = UIColor(named: "ColorGray")?.cgColor
-        txtField.layer.shadowRadius = 0
-        txtField.setLeftPaddingPoints(15)
-        txtField.addTarget(self, action: #selector(txtFieldChanging(_:)), for: .editingChanged)
-        return txtField
-    }()
-    
-    private lazy var registerTelefoneLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Telefone com DDD"
-        label.font = .init(name: "Poppins", size: 16)
-        label.numberOfLines = 0
-        label.textColor = UIColor(named: "ColorGray")
-        return label
-    }()
-    
-    private lazy var insertTelefoneTextField: UITextField = {
-        let txtField = UITextField()
-        txtField.translatesAutoresizingMaskIntoConstraints = false
-        txtField.placeholder = "Insira seu telefone/whatsapp"
-        txtField.font = .init(name: "Poppins", size: 16)
-        txtField.backgroundColor = UIColor(named: "ColorLightGray")
-        txtField.layer.cornerRadius = 8
-        txtField.layer.shadowOffset = .init(width: 0, height: 2)
-        txtField.layer.shadowOpacity = 0.25
-        txtField.layer.shadowColor = UIColor(named: "ColorGray")?.cgColor
-        txtField.layer.shadowRadius = 0
-        txtField.setLeftPaddingPoints(15)
-        return txtField
-    }()
-    
-    private lazy var registerPasswordLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Senha"
-        label.font = .init(name: "Poppins", size: 16)
-        label.numberOfLines = 0
-        label.textColor = UIColor(named: "ColorGray")
-        return label
-    }()
-    
-    private lazy var insertPasswordTextField: UITextField = {
-        let txtField = UITextField()
-        txtField.translatesAutoresizingMaskIntoConstraints = false
-        txtField.placeholder = "Crie uma senha"
-        txtField.font = .init(name: "Poppins", size: 16)
-        txtField.backgroundColor = UIColor(named: "ColorLightGray")
-        txtField.layer.cornerRadius = 8
-        txtField.layer.shadowOffset = .init(width: 0, height: 2)
-        txtField.layer.shadowOpacity = 0.25
-        txtField.layer.shadowColor = UIColor(named: "ColorGray")?.cgColor
-        txtField.layer.shadowRadius = 0
-        txtField.isSecureTextEntry = true
-        txtField.setLeftPaddingPoints(15)
-        return txtField
+    private lazy var passwordInputField: APLabeledTextField = {
+        return APLabeledTextField(title: "Senha", placeholder: "Crie uma senha", isSecureEntry: true)
     }()
     
     private lazy var registerUserStackView: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [registerNameLabel, insertNameTextField, registerEmailLabel, insertEmailTextField, registerTelefoneLabel, insertTelefoneTextField, registerPasswordLabel, insertPasswordTextField])
+        let stack = UIStackView(arrangedSubviews: [nameInputField, emailInputField, phoneNumberInputField, passwordInputField])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.alignment = .fill
         stack.distribution = .equalSpacing
-        stack.spacing = 16
+        stack.spacing = Constants.UIConstants.stackSpacing
         stack.axis = .vertical
         return stack
     }()
@@ -230,10 +149,6 @@ class SignUpViewController: UIViewController {
             registerUserStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 32),
             registerUserStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -32),
             
-            insertNameTextField.heightAnchor.constraint(equalToConstant: 48),
-            insertTelefoneTextField.heightAnchor.constraint(equalToConstant: 48),
-            insertEmailTextField.heightAnchor.constraint(equalToConstant: 48),
-            insertPasswordTextField.heightAnchor.constraint(equalToConstant: 48),
             
             confirmRegisterButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 88),
             confirmRegisterButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -88),
@@ -246,14 +161,14 @@ class SignUpViewController: UIViewController {
     
     @objc func signUpButton() {
         
-        guard let name = insertNameTextField.text,
-              let email = insertEmailTextField.text,
-              let phoneNumber = insertTelefoneTextField.text,
-              let password = insertPasswordTextField.text else {return}
+        guard let name = nameInputField.textField.text,
+              let email = emailInputField.textField.text,
+              let phoneNumber = phoneNumberInputField.textField.text,
+              let password = passwordInputField.textField.text else {return}
         
         let userData = CreateUserAccountModel(name: name, email: email, phoneNumber: phoneNumber, password: password)
         
-        db.saveUser(userData: userData)
+        userManager.saveUser(userData: userData)
         
         navigationController?.pushViewController(SignInViewController(), animated: true)
     }
